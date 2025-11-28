@@ -1,16 +1,16 @@
 # Install required packages (uncomment to install)
-# install.packages("shiny")  
-# install.packages("readr") 
-# install.packages("dplyr")  
+# install.packages("shiny")
+# install.packages("readr")
+# install.packages("dplyr")
 # install.packages("ggplot2")
-# install.packages("bslib")  
-# install.packages("bsicons")  
-# install.packages("plotly")   
-# install.packages("leaflet") 
-# install.packages("htmltools") 
-# install.packages("DT")      
-# install.packages("stringr") 
-# install.packages("tidyr")    
+# install.packages("bslib")
+# install.packages("bsicons")
+# install.packages("plotly")
+# install.packages("leaflet")
+# install.packages("htmltools")
+# install.packages("DT")
+# install.packages("stringr")
+# install.packages("tidyr")
 
 library(shiny)
 library(readr)
@@ -26,14 +26,17 @@ library(stringr)
 library(tidyr)
 
 # Custom variables for file paths, organization, and dates
-setwd("ENTER YOUR WORKING DIRECTORY HERE")  
-file_path <- "ENTER YOUR FILE PATH HERE"    
-organization_name <- "ENTER YOUR ORGANIZATION NAME HERE"  
-start_date <- "ENTER START DATE HERE"        
-update_date <- "ENTER UPDATE DATE HERE"       
+# Ce ci c'est les valuers qu'IL FAUT CHANGER pour les chemins de fichiers, organisation et dates
+# Il n'y a pas des autre places pour changer la scripte
+setwd("/home/cleger/ORCID-Data-Visualization/data")
+file_path <- "/home/cleger/ORCID-Data-Visualization/data/orcid_data_latlng.csv"
+organization_name <- "Mount Allison University"
+start_date <- "Jan 1, 2023"
+update_date <- "Dec 31, 2024"
 
 
 # Generate subtitle panel for displaying dates
+# Cette partie du scripte c'est pour une panneau de sous-titres pour afficher les dates
 generateSubtitlePanel <- function(org_name = organization_name, start = start_date, end = update_date) {
   div(
     class = "subtitle",
@@ -42,6 +45,7 @@ generateSubtitlePanel <- function(org_name = organization_name, start = start_da
 }
 
 # Generate title panel for the UI
+# Générer le panneau titre pour l'interface utilisateur
 generateTitlePanel <- function(org_name = organization_name, start = start_date, end = update_date) {
   tagList(
     titlePanel(paste(organization_name, " (", start, " - ", end, ")", sep = "")),
@@ -53,6 +57,7 @@ generateTitlePanel <- function(org_name = organization_name, start = start_date,
 }
 
 # UI function
+# Le fonction de l'interface utilisateur
 ui <- page_navbar(
   theme = bs_theme(version = 5, preset = "bootstrap"),
   title = "ORCID Collaboration Dashboard",
@@ -120,11 +125,14 @@ ui <- page_navbar(
 )
 
 # Server function
+# Fonction serveur
 server <- function(input, output, session) {
   # Create a reactive file reader to read the CSV file
+  # Créez un lecteur de fichiers réactif pour lire le fichier CSV
   reader <- reactiveFileReader(intervalMillis = 1000, session, filePath = file_path, readFunc = read.csv)
   
   # Reactive data frame to read and debug
+  # Trame de données réactive pour la lecture et le débogage
   data <- reactive({
     df <- reader()
     print("Data read. Number of rows:")
@@ -207,6 +215,7 @@ server <- function(input, output, session) {
                      tick0 = 0,
                      dtick = 1,
                      autorange=TRUE),
+                    ),
         margin = list(l = 120)  # Adjust left margin for longer y-axis labels
       )
   })
